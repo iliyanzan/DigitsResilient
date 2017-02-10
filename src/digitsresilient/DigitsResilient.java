@@ -68,9 +68,9 @@ public class DigitsResilient {
 	private static void experiment(String title, ActivationFunction activation, NeuralDataSet training, double epsilon) {
 		for (long g = 0; g < 30; g++) {
 			BasicNetwork network = new BasicNetwork();
-			network.addLayer(new BasicLayer(activation, true, 2));
-			network.addLayer(new BasicLayer(activation, true, 4));
-			network.addLayer(new BasicLayer(activation, false, 1));
+			network.addLayer(new BasicLayer(activation, true, INPUT_SIZE));
+			network.addLayer(new BasicLayer(activation, true, HIDDEN_SIZE));
+			network.addLayer(new BasicLayer(activation, false, OUTPUT_SIZE));
 			network.getStructure().finalizeStructure();
 			network.reset();
 
