@@ -27,7 +27,7 @@ public class DigitsResilient {
 
 	private static final int MAX_EPOCHS = 300000;
 
-	private static final double TARGET_ANN_ERROR = 0.0001;
+	private static final double TARGET_ANN_ERROR = 0.00000001;
 
 	public static final int TRAINING_SET_SIZE = 1593, INPUT_SIZE = 256, HIDDEN_SIZE = 64, OUTPUT_SIZE = 10;
 
@@ -69,7 +69,7 @@ public class DigitsResilient {
 	private static void experiment(String title, ActivationFunction activation, NeuralDataSet training, double epsilon) {
 		for (long g = 0; g < 10; g++) {
 			BasicNetwork network = new BasicNetwork();
-			network.addLayer(new BasicLayer(activation, true, INPUT_SIZE));
+			network.addLayer(new BasicLayer(null, true, INPUT_SIZE));
 			network.addLayer(new BasicLayer(activation, true, HIDDEN_SIZE));
 			network.addLayer(new BasicLayer(activation, false, OUTPUT_SIZE));
 			network.getStructure().finalizeStructure();
