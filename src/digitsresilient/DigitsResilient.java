@@ -36,10 +36,9 @@ public class DigitsResilient {
 	private static final NeuralDataSet MINUS_PLUS_ONE_TRAINING;
 
 	static {
-		double[][] trainingZeroOne = new double[TRAINING_SET_SIZE][INPUT_SIZE];
-		double[][] idealZeroOne = new double[TRAINING_SET_SIZE][OUTPUT_SIZE];
-
 		double[][] trainingMinusPlusOne = new double[TRAINING_SET_SIZE][INPUT_SIZE];
+		
+		double[][] idealZeroOne = new double[TRAINING_SET_SIZE][OUTPUT_SIZE];
 		double[][] idealMinusPlusOne = new double[TRAINING_SET_SIZE][OUTPUT_SIZE];
 
 		try (FileReader fr = new FileReader("data\\digits.txt"); BufferedReader br = new BufferedReader(fr)) {
@@ -47,8 +46,7 @@ public class DigitsResilient {
 			for (int i = 0; (line = br.readLine()) != null; ++i) {
 				for (int j = 0; j < INPUT_SIZE; ++j) {
 					char c = line.charAt(j);
-					trainingZeroOne[i][j] = c == '0' ? 0.01 : 0.99;
-					trainingMinusPlusOne[i][j] = c == '0' ? -0.99 : 0.99;
+					trainingMinusPlusOne[i][j] = c == '0' ? -1 : 1;
 				}
 				for (int j = 0; j < OUTPUT_SIZE; ++j) {
 					char c = line.charAt(INPUT_SIZE + j);
@@ -61,7 +59,7 @@ public class DigitsResilient {
 			Logger.getLogger(DigitsResilient.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
-		ZERO_ONE_TRAINING = new BasicNeuralDataSet(trainingZeroOne, idealZeroOne);
+		ZERO_ONE_TRAINING = new BasicNeuralDataSet(trainingMinusPlusOne, idealZeroOne);
 
 		MINUS_PLUS_ONE_TRAINING = new BasicNeuralDataSet(trainingMinusPlusOne, idealMinusPlusOne);
 	}
