@@ -23,7 +23,7 @@ import org.encog.neural.networks.training.propagation.resilient.ResilientPropaga
 
 public class DigitsResilient {
 
-	private static final long MAX_TRAINING_TIME = 1000;
+	private static final long MAX_TRAINING_TIME = 1 * 1000;
 
 	private static final int MAX_EPOCHS = 300000;
 
@@ -36,9 +36,10 @@ public class DigitsResilient {
 	private static final NeuralDataSet MINUS_PLUS_ONE_TRAINING;
 
 	static {
-		double[][] trainingMinusPlusOne = new double[TRAINING_SET_SIZE][INPUT_SIZE];
-		
+		double[][] trainingZeroOne = new double[TRAINING_SET_SIZE][INPUT_SIZE];
 		double[][] idealZeroOne = new double[TRAINING_SET_SIZE][OUTPUT_SIZE];
+
+		double[][] trainingMinusPlusOne = new double[TRAINING_SET_SIZE][INPUT_SIZE];
 		double[][] idealMinusPlusOne = new double[TRAINING_SET_SIZE][OUTPUT_SIZE];
 
 		try (FileReader fr = new FileReader("data\\digits.txt"); BufferedReader br = new BufferedReader(fr)) {
@@ -46,7 +47,8 @@ public class DigitsResilient {
 			for (int i = 0; (line = br.readLine()) != null; ++i) {
 				for (int j = 0; j < INPUT_SIZE; ++j) {
 					char c = line.charAt(j);
-					trainingMinusPlusOne[i][j] = c == '0' ? -1 : 1;
+					trainingZeroOne[i][j] = c == '0' ? 0.01 : 0.99;
+					trainingMinusPlusOne[i][j] = c == '0' ? -0.99 : 0.99;
 				}
 				for (int j = 0; j < OUTPUT_SIZE; ++j) {
 					char c = line.charAt(INPUT_SIZE + j);
@@ -59,7 +61,7 @@ public class DigitsResilient {
 			Logger.getLogger(DigitsResilient.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
-		ZERO_ONE_TRAINING = new BasicNeuralDataSet(trainingMinusPlusOne, idealZeroOne);
+		ZERO_ONE_TRAINING = new BasicNeuralDataSet(trainingZeroOne, idealZeroOne);
 
 		MINUS_PLUS_ONE_TRAINING = new BasicNeuralDataSet(trainingMinusPlusOne, idealMinusPlusOne);
 	}
@@ -172,11 +174,6 @@ class ActivationFadingSin implements ActivationFunction {
 		SIN.setParam(index, value);
 	}
 
-	@Override
-	public String getLabel() {
-		return "fading sin";
-	}
-
 }
 
 class ActivationExponentRegulatedSin implements ActivationFunction {
@@ -243,8 +240,4 @@ class ActivationExponentRegulatedSin implements ActivationFunction {
 		SIN.setParam(index, value);
 	}
 
-	@Override
-	public String getLabel() {
-		return "exponent regulated sin";
-	}
 }
